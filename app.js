@@ -4,7 +4,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send("API is running");
@@ -23,7 +23,7 @@ app.post('/song/:number', async (req, res) => {
             body:
                 JSON.stringify({
                     title: `Song Correction Request for ${songNumber}`,
-                    description: req.body.description,
+                    body: req.body.description,
                     labels: ["data"],
                     assignee: ["vachan-maker"]
                 })
@@ -31,7 +31,7 @@ app.post('/song/:number', async (req, res) => {
         })
         const data = await response.json()
 
-        if(!res.ok) {
+        if(!response.ok) {
             return res.status(response.status).json(data);
         }
         res.json(data)
@@ -42,4 +42,4 @@ app.post('/song/:number', async (req, res) => {
     }
 })
 
-app.listen(PORT,()=> `Listening on PORT ${PORT}`);
+app.listen(PORT,()=> console.log(`Listening on PORT ${PORT}`));
