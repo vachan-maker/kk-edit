@@ -25,7 +25,7 @@ app.post('/song/:number', async (req, res) => {
                     title: `Song Correction Request for ${songNumber}`,
                     body: req.body.description,
                     labels: ["data"],
-                    assignee: ["vachan-maker"]
+                    assignees: ["vachan-maker"]
                 })
 
         })
