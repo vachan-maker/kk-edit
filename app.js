@@ -1,23 +1,45 @@
 const express = require("express");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.get('/',(req,res)=>{
+
+app.get('/', (req, res) => {
     res.send("API is running");
 })
 
-app.post('/song/:number',async(req,res) => {
+app.post('/song/:number', async (req, res) => {
     var songNumber = req.params.number;
-    try{
-    const response = await fetch('https://api.github.com/vachan-maker/kristheeya-keerthanangal-data-repo',{
-        method: "POST",
-        headers: {
-            "Accept": "application/vnd.github+json",
-            "Authorization": "Bearer <YOUR-TOKEN>",
-            "X-GitHub-Api-Version": "2026-03-10"
+    try {
+        const response = await fetch('https://api.github.com/repos/vachan-maker/kristheeya-keerthanangal-data-repo/issues', {
+            method: "POST",
+            headers: {
+                "Accept": "application/vnd.github+json",
+                "Authorization": "Bearer <YOUR-TOKEN>",
+                "X-GitHub-Api-Version": "2026-03-10"
+            },
+            body:
+                JSON.stringify({
+                    title: `Song Correction Request for ${songNumber}`,
+                    description: req.body.description,
+                    labels: ["data"],
+                    assignee: ["vachan-maker"]
+                })
+
+        })
+        const data = await response.json()
+
+        if(!res.ok) {
+            return res.status(response.status).json(data);
         }
-    })
-    } catch(error) {
+        res.json(data)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:"Internal Server Errror"})
 
     }
 })
+
+app.listen(PORT,()=> `Listening on PORT ${PORT}`);
