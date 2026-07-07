@@ -18,11 +18,12 @@ app.post('/song/:number', async (req, res) => {
             headers: {
                 "Accept": "application/vnd.github+json",
                 "Authorization": `Bearer ${process.env.GITHUB_TOKEN}`,
+                "X-GitHub-Api-Version": "2022-11-28"
             },
             body:
                 JSON.stringify({
                     title: `Song Correction Request for ${songNumber}`,
-                    body: req.body.description,
+                    body: req.body.body,
                     labels: ["data"],
                     assignees: ["vachan-maker"]
                 })
