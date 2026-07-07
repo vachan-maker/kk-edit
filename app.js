@@ -17,7 +17,7 @@ app.post('/song/:number', async (req, res) => {
             method: "POST",
             headers: {
                 "Accept": "application/vnd.github+json",
-                "Authorization": "Bearer <YOUR-TOKEN>",
+                "Authorization": `Bearer ${process.env.GITHUB_TOKEN}`,
                 "X-GitHub-Api-Version": "2026-03-10"
             },
             body:
