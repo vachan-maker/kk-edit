@@ -13,6 +13,17 @@ app.get('/', (req, res) => {
 app.post('/song/:number', async (req, res) => {
     var songNumber = req.params.number;
     try {
+        if(req.body.body == null || req.body.body == "")
+        {
+            return res.status(400).json({
+                error: "Body is required!"
+            })
+        }
+        if(songNumber < 1 || songNumber > 504) {
+            return res.status(400).json({
+                error: "Song number must be between 1 and 504"
+            })
+        }
         const response = await fetch('https://api.github.com/repos/vachan-maker/kristheeya-keerthanangal-data-repo/issues', {
             method: "POST",
             headers: {
@@ -37,7 +48,7 @@ app.post('/song/:number', async (req, res) => {
         res.json(data)
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:"Internal Server Errror"})
+        res.status(500).json({error:"Server Error"})
 
     }
 })
